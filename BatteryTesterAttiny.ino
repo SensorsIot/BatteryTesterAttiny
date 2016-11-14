@@ -1,8 +1,8 @@
 /*  BatteryTesterAttiny.ino  -
   2015 Copyright (c) Andreas Spiess  All right reserved.
- 
+
   Author: Andreas Spiess
-  
+
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
   License as published by the Free Software Foundation; either
@@ -13,8 +13,8 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
   Lesser General Public License for more details.
 
-  */
-  
+*/
+
 #include <TinyOzOLED.h>
 #include <TinyWireM.h>
 
@@ -46,7 +46,7 @@ void setup() {
 
   OzOled.clearDisplay();           //clear the screen and set start position to top left corner
   OzOled.setNormalDisplay();       //Set display to Normal mode
-  
+
   OzOled.sendCommand(0xA1);        // set Orientation
   OzOled.sendCommand(0xC8);
 
@@ -58,10 +58,10 @@ void loop() {
   digitalWrite(FET, LOW);
 
   // wait till value stable
-  while (abs(emptyRaw - emptyOld) > 3) {
+  do {
     emptyOld = emptyRaw;
     emptyRaw = analogRead(ADCVOLT);
-  }
+  } while (abs(emptyRaw - emptyOld) > 3);
 
   // Average over 10 cycles
   emptySum = 0;
@@ -98,10 +98,10 @@ void loop() {
 }
 
 void displayOLED() {
-    char tmp[10];
-    dtostrf(empty, 1, 2, tmp);
-    OzOled.printBigNumber(tmp, 0, 0, 4);
-    dtostrf(load, 1, 2, tmp);
-    OzOled.printBigNumber(tmp, 0, 4, 4);
+  char tmp[10];
+  dtostrf(empty, 1, 2, tmp);
+  OzOled.printBigNumber(tmp, 0, 0, 4);
+  dtostrf(load, 1, 2, tmp);
+  OzOled.printBigNumber(tmp, 0, 4, 4);
 }
 

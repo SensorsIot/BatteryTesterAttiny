@@ -73,10 +73,10 @@ void loop() {
   digitalWrite(FET, HIGH);             // switch load on
 
 
-  while (abs(loadRaw - emptyOld) > 3) {
+  do {
     emptyOld = loadRaw;
     loadRaw = analogRead(ADCVOLT);
-  }
+  }  while (abs(loadRaw - emptyOld) > 3);
 
   currRaw = analogRead(ADCCURRENT);
   curr = currRaw * 1.1 / 1023.0;
